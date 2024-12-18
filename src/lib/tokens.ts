@@ -5,12 +5,12 @@ const encoding = encoding_for_model("gpt-3.5-turbo");
 const TOKEN_LIMIT = 4097 * 0.9; // we want to be safe
 export const MAX_RESPONSE_TOKENS = 600;
 
-function countTokens (text: string) {
+function countTokens(text: string) {
   const tokens = encoding.encode(text);
   return tokens.length;
 }
 
-export function trimMessages (messages: Message[]): Message[] {
+export function trimMessages(messages: Message[]): Message[] {
   const [systemMessage, ...restMessages] = messages;
 
   let totalTokens = countTokens(systemMessage.content) + MAX_RESPONSE_TOKENS;
@@ -19,7 +19,7 @@ export function trimMessages (messages: Message[]): Message[] {
   // Keep as many messages as I can, up until I reach the token limit
   for (const message of restMessages.reverse()) {
     const newTotalTokens = totalTokens + countTokens(message.content);
-  
+
     if (newTotalTokens > TOKEN_LIMIT) {
       break;
     } else {
